@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  app:
+    image: sky-user-service/docker-image
+    build: .
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    ports:
+      - 3000:3000
+    networks:
+      - api-network
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    volumes:
+      - db_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - api-network
+
+volumes:
+  db_data:
+
+networks:
+  api-network:
+    driver: bridge
